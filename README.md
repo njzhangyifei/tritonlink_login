@@ -1,2 +1,19 @@
 # tritonlink_login
-Simulate User's Login into UCSD TritonLink
+---
+##Overview
+This is a python snippet that simulates users' interaction with UCSD TritonLink Student SSO login system.
+
+##Usage
+###Create an instance
+`
+tl = TritonLink
+` 
+
+###Retrieve Student Information
+`
+info.get_student_info()
+`
+
+---
+
+####See python script for more info.
