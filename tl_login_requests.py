@@ -135,7 +135,6 @@ class TritonLink:
                     };
             courses.append(course);
         return courses;
-    
 
 user_name = raw_input('Enter your id: ')
 user_password= getpass.getpass('Enter your password: ')
