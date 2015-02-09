@@ -1,5 +1,5 @@
 # tritonlink_login
----
+
 ##Overview
 This is a python snippet that simulates users' interaction with UCSD TritonLink Student SSO login system.
 
@@ -14,6 +14,5 @@ tl = TritonLink
 info.get_student_info()
 `
 
----
 
 ####See python script for more info.
