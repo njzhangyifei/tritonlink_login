@@ -62,7 +62,9 @@ meeting | a list of meetings relating to the course (including Lecture/Discussio
 
 
 `meetings = enrolled_courses[x]['meeting']`will save the list of meetings into `meetings`
+
 `meetings[x]` will be a key-value pair dictionary,
+
 Keys         | Values
 ------------ | -------------
 id | id number for the meeting (only valid for a Lecture-type meeting)
@@ -72,6 +74,7 @@ time | meeting time of the meeting (e.g. "7:00p - 7:50p")
 days | days on which the meeting will hold (e.g. "MTuWThF")
 building | building in which the meeting will hold (e.g. "CENTR")
 room | room in which the meeting will hold (e.g. "119")
+
 
 ###See python script demo.py for more info.
 
