@@ -16,7 +16,12 @@ print;
 enrolled_courses = tl.get_courses_enrolled();
 for quarter, courses in enrolled_courses.iteritems():
     print "You've selected the following courses for "+quarter+" :";
+    print "----------------------------------------------------------------";
     for course in courses:
         print course['department'] +" "+course['section']+": "+course['title']+"   Instructor: "+course['instructor'];
+        meetings = course['meeting'];
+        for meeting in meetings:
+            print meeting['type']+" "+meeting['section']+" at "+meeting['building']+meeting['room']+" on "+meeting['days']+" during "+meeting['time'];
+        print;
     print;
 

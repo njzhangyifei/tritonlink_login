@@ -126,12 +126,48 @@ class TritonLink:
         courses = [];
         for course_html in courses_html:
             course_quarter = course_html.find_previous('td',{'width':'34%','class':'boldheadertxt_noborder'}).text.strip();
-            course_department = course_html.find_next('tr').find_all('td')[1].text;
-            course_section = course_html.find_next('tr').find_all('td')[2].text;
-            course_title = course_html.find_next('tr').find_all('td')[3].text;
-            course_units = course_html.find_next('tr').find_all('td')[4].text;
-            course_grading = course_html.find_next('tr').find_all('td')[5].font.text;
-            course_instructor = course_html.find_next('tr').find_all('td')[6].text;
+            
+            course_row = course_html.find_next('tr')
+    
+            course_department = course_row.find_all('td')[1].text;
+            course_section = course_row.find_all('td')[2].text;
+            course_title = course_row.find_all('td')[3].text;
+            course_units = course_row.find_all('td')[4].text;
+            course_grading = course_row.find_all('td')[5].font.text;
+            course_instructor = course_row.find_all('td')[6].text;
+            
+            meetings_html = course_row.find_all_next('tr',class_=re.compile("white_background"))
+
+            meetings = []
+            for meeting_html in meetings_html:
+                terminating = False;
+                attrs_next = meeting_html.find_next('tr').attrs
+                if not('class' in attrs_next):
+                    #terminating, but we still want this meeting row
+                    terminating = True;
+
+                meeting_row = meeting_html.find_all_next('td')
+                meeting_id = meeting_row[0].text.strip();              
+                meeting_type = meeting_row[1].text.strip();              
+                meeting_section = meeting_row[2].text.strip();              
+                meeting_time = meeting_row[3].text.strip();              
+                meeting_days = meeting_row[4].text.strip();              
+                meeting_building = meeting_row[5].text.strip();
+                meeting_room = meeting_row[6].text.strip();
+
+                meeting = {
+                        'id' : meeting_id,
+                        'type' : meeting_type,
+                        'section' : meeting_section,
+                        'time' : meeting_time,
+                        'days' : meeting_days,
+                        'building' : meeting_building,
+                        'room' : meeting_room
+                        };
+                meetings.append(meeting);
+                if terminating:
+                    break;
+
             course = {
                     'department' : course_department,
                     'section' : course_section,
@@ -139,6 +175,7 @@ class TritonLink:
                     'units' : course_units,
                     'grading' : course_grading,
                     'instructor' : course_instructor,
+                    'meeting' : meetings
                     };
             courses = quarters[course_quarter]
             courses.append(course);
