@@ -44,11 +44,32 @@ holds | number of holds in TritonLink
 ###Retrieve Enrollment Information
 Retrieve student enrollment information based on the current TritonLink login
 
+####Retrieve Enrollment/Quarter Information
+
 ```python
 enrolled_courses = tl.get_courses_enrolled()
 ```
 
-`enrolled_courses` will be a key-value pair dictionary, 
+`enrolled_courses` is a key-value pair dictionary
+
+For example:
+
+```python
+for quarter, courses in enrolled_courses.iteritems():
+	print "You've selected the following courses for "+quarter+" :";
+	for course in courses:
+		#whatever
+```
+
+Keys         | Values
+------------ | -------------
+(name of the quarter, e.g. "Spring Qtr 2015") | a ***list*** of key-value pairs for courses (described below) 
+
+####Retrieve Course List
+
+`courses = enrolled_courses[quarter_name]` will save the ***list*** of courses into `courses`
+
+`courses[x]` will be a key-value pair dictionary described as following
 
 Keys         | Values
 ------------ | -------------
@@ -60,10 +81,11 @@ grading | method of grading (e.g. "Letter" or "P/NP")
 instructor | name of the instructor (Last Name, First Name)
 meeting | a list of meetings relating to the course (including Lecture/Discussion/Midterm/Final)
 
+####Retrieve Meetings for Course
 
-`meetings = enrolled_courses[x]['meeting']`will save the list of meetings into `meetings`
+`meetings = courses[x]['meeting']`will save the ***list*** of meetings into `meetings`
 
-`meetings[x]` will be a key-value pair dictionary,
+`meetings[x]` will be a key-value pair dictionary
 
 Keys         | Values
 ------------ | -------------
