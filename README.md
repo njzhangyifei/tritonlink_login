@@ -58,5 +58,20 @@ title | title of the course (e.g. "Introduction to Robotics")
 units | number of units (e.g. "1.00")
 grading | method of grading (e.g. "Letter" or "P/NP")
 instructor | name of the instructor (Last Name, First Name)
+meeting | a list of meetings relating to the course (including Lecture/Discussion/Midterm/Final)
+
+
+`meetings = enrolled_courses[x]['meeting']`will save the list of meetings into `meetings`
+`meetings[x]` will be a key-value pair dictionary,
+Keys         | Values
+------------ | -------------
+id | id number for the meeting (only valid for a Lecture-type meeting)
+type | type of the meeting ( "Discussion"/"Lecture"/"Midterm"/"Final")
+section | section number (e.g. "A00") of the meeting
+time | meeting time of the meeting (e.g. "7:00p - 7:50p")
+days | days on which the meeting will hold (e.g. "MTuWThF")
+building | building in which the meeting will hold (e.g. "CENTR")
+room | room in which the meeting will hold (e.g. "119")
 
 ###See python script demo.py for more info.
+
