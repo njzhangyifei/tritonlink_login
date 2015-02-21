@@ -1,6 +1,5 @@
 import requests
 import re
-import getpass
 from HTMLParser import HTMLParser;
 from bs4 import BeautifulSoup
 
@@ -136,19 +135,6 @@ class TritonLink:
             courses.append(course);
         return courses;
 
-user_name = raw_input('Enter your id: ')
-user_password= getpass.getpass('Enter your password: ')
-tl = TritonLink(user_name,user_password);
-tl.login();
-session = tl.requests_session;
-mytl = tl.mytritonlink;
-info = tl.get_student_info();
-print "Welcome back, "+info['name'];
-print "You are a "+info['years']+" year "+info['major']+" student in "+info['college'];
-print "You have "+info['holds']+" holds. Your account balance is "+info['account_balance'];
-#print response.headers;
-enrolled_courses = tl.get_courses_enrolled();
-print "You've selected the following courses:";
-for course in enrolled_courses:
-    print course['department'] +" "+course['section']+" : "+course['title']+"\tInstructor: "+course['instructor'];
+    def get_courses_schedule(self):
+        return 0;
 
