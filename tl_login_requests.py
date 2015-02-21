@@ -115,9 +115,17 @@ class TritonLink:
         enrolled_courses_url = "https://act.ucsd.edu/studentEnrolledClasses/enrolledclasses"
         enrolled_classes_html = self._requests_session.get(enrolled_courses_url);
         soup = BeautifulSoup(enrolled_classes_html.text);
-        courses = [];
+        quarters = {};
         courses_html = soup.find_all('td',{'bgcolor':'#c0c0c0'});
+        #find all quarters first
+        quarters_html = courses_html[len(courses_html)-1].find_all_previous('td',{'width':'34%','class':'boldheadertxt_noborder'})
+        for quarter_html in quarters_html:
+            quarter_name = quarter_html.text.strip();
+            quarters[quarter_name] = [];
+
+        courses = [];
         for course_html in courses_html:
+            course_quarter = course_html.find_previous('td',{'width':'34%','class':'boldheadertxt_noborder'}).text.strip();
             course_department = course_html.find_next('tr').find_all('td')[1].text;
             course_section = course_html.find_next('tr').find_all('td')[2].text;
             course_title = course_html.find_next('tr').find_all('td')[3].text;
@@ -132,9 +140,10 @@ class TritonLink:
                     'grading' : course_grading,
                     'instructor' : course_instructor,
                     };
+            courses = quarters[course_quarter]
             courses.append(course);
-        return courses;
+            quarters[course_quarter] = courses;
+        return quarters;
 
     def get_courses_schedule(self):
         return 0;
-

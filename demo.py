@@ -8,11 +8,15 @@ tl.login();
 session = tl.requests_session;
 mytl = tl.mytritonlink;
 info = tl.get_student_info();
-print "Welcome back, "+info['name'];
+print "Welcome back, "+info['name']+"\n";
 print "You are a "+info['years']+" year "+info['major']+" student in "+info['college'];
 print "You have "+info['holds']+" holds. Your account balance is "+info['account_balance'];
+
+print;
 enrolled_courses = tl.get_courses_enrolled();
-print "You've selected the following courses:";
-for course in enrolled_courses:
-    print course['department'] +" "+course['section']+"\t: "+course['title']+"\tInstructor: "+course['instructor'];
+for quarter, courses in enrolled_courses.iteritems():
+    print "You've selected the following courses for "+quarter+" :";
+    for course in courses:
+        print course['department'] +" "+course['section']+": "+course['title']+"   Instructor: "+course['instructor'];
+    print;
 
