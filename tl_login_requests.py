@@ -142,7 +142,7 @@ class TritonLink:
             for meeting_html in meetings_html:
                 terminating = False;
                 attrs_next = meeting_html.find_next('tr').attrs
-                if not('class' in attrs_next):
+                if ((not('class' in attrs_next)) and (attrs_next)):
                     #terminating, but we still want this meeting row
                     terminating = True;
 
