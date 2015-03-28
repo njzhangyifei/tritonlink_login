@@ -8,10 +8,17 @@ class UCSD_SSO_SAML_Parser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self);
         self.SAMLResponse = '';
-        self.TARGET = '';
+        self.RelayState = '';
     def handle_starttag(self,tag,attrs):
         self.SAMLCatched = False;
-        self.TARGETCatched = False;
+        self.RelayStateCatched = False;
+        for attr in attrs:
+            if attr[0] == 'name':
+                if attr[1] == 'RelayState':
+                    self.RelayStateCatched = True;
+            if self.RelayStateCatched:
+                if attr[0] == 'value':
+                    self.RelayState = attr[1];
         for attr in attrs:
             if attr[0] == 'name':
                 if attr[1] == 'SAMLResponse':
@@ -19,13 +26,6 @@ class UCSD_SSO_SAML_Parser(HTMLParser):
             if self.SAMLCatched:
                 if attr[0] == 'value':
                     self.SAMLResponse = attr[1];
-        for attr in attrs:
-            if attr[0] == 'name':
-                if attr[1] == 'TARGET':
-                    self.TARGETCatched = True;
-            if self.TARGETCatched:
-                if attr[0] == 'value':
-                    self.TARGET = attr[1];
     def close(self):
         HTMLParser.close(self);
 
@@ -33,6 +33,7 @@ class UCSD_SSO_SAML_Parser(HTMLParser):
 class TritonLink:
     tritonlink_url = "http://mytritonlink.ucsd.edu";
     ucsd_sso_saml_url = "https://act.ucsd.edu/Shibboleth.sso/SAML/POST";
+    ucsd_sso_saml2_url = "https://act.ucsd.edu/Shibboleth.sso/SAML2/POST";
     def __init__(self,user_id,user_pd):
         self._requests_session = requests.Session();
         self._loggedin = False;
@@ -61,21 +62,22 @@ class TritonLink:
                 'urn:mace:ucsd.edu:sso:username':self._tritonlink_username,
                 'urn:mace:ucsd.edu:sso:password':self._tritonlink_password,
                 'submit' : 'submit',
-                'urn:mace:ucsd.edu:sso:authmethod':
+                'urn:mace:ucsd.edu:sso:authmethod': 
                     'urn:mace:ucsd.edu:sso:studentsso'
                 }
         response = self._requests_session.post(response.url,student_sso_param);
         parser = UCSD_SSO_SAML_Parser();
         parser.feed(response.text);
         SAML_response = parser.unescape(parser.SAMLResponse);
-        SAML_target = parser.unescape(parser.TARGET);
+        RelayState = parser.unescape(parser.RelayState);
         SAML_param = {
+                'RelayState' : RelayState,
                 'SAMLResponse' : SAML_response,
-                'TARGET' : SAML_target
                 }
+        #update to SAML2, SPRING 2015
         response = self._requests_session.post(
-                self.ucsd_sso_saml_url,SAML_param,allow_redirects = False);
-        response = self._requests_session.get(SAML_target);
+                self.ucsd_sso_saml2_url,SAML_param,allow_redirects = False);
+        response = self._requests_session.get(RelayState);
         # ::TODO need to check the validity of login
         self._loggedin = True;
         self._mytritonlink = response.text;
