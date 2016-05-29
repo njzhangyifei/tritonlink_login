@@ -3,6 +3,8 @@
 ##Overview
 This is a python library that simulates users' interaction with UCSD TritonLink Student SSO login system.
 
+###WARNING: THIS SCRIPT IS JUST AN IMPLEMENTATION OF IDEAS!!! IT MIGHT ALREADY BE OBSOLETE.
+
 ##Dependency
 BeautifulSoup, Requests, re
 
