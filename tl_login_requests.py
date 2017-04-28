@@ -86,7 +86,7 @@ class TritonLink:
     def get_student_info(self):
         if (not(self._loggedin)):
             return False;
-        soup = BeautifulSoup(self._mytritonlink);
+        soup = BeautifulSoup(self._mytritonlink, 'lxml');
         sidebar = soup.find('div',id='my_tritonlink_sidebar')
         name = sidebar.h2.string.strip()
         college = sidebar.find_all('p')[0].a.string.strip();
@@ -116,7 +116,7 @@ class TritonLink:
     def get_courses_enrolled(self):
         enrolled_courses_url = "https://act.ucsd.edu/studentEnrolledClasses/enrolledclasses"
         enrolled_classes_html = self._requests_session.get(enrolled_courses_url);
-        soup = BeautifulSoup(enrolled_classes_html.text);
+        soup = BeautifulSoup(enrolled_classes_html.text, 'lxml');
         quarters = {};
         courses_html = soup.find_all('td',{'bgcolor':'#c0c0c0'});
         #find all quarters first
