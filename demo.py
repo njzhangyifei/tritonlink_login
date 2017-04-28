@@ -1,3 +1,5 @@
+#!/usr/bin/env python2.7
+
 from tl_login_requests import *
 import getpass
 
